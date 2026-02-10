@@ -11,25 +11,36 @@
             <h1 class="card-title mb-0">Quanto Era</h1>
         </div>
         <div class="card-body">
-            <p class="text-center text-muted">Enter a value and a date to calculate the IPCA correction.</p>
+            <p class="text-center text-muted">Insira valor e mês/ano para correção IPCA.</p>
 
-            <div class="mb-3">
-                <label for="valueInput" class="form-label">Value:</label>
-                <InputNumber id="valueInput" class="form-control" @bind-Value="Value" />
-            </div>
+            <EditForm Model="Model" OnValidSubmit="HandleValidSubmit" FormName="ipcaForm">
+                <DataAnnotationsValidator />
+                <div class="mb-3">
+                    <label for="valueInput" class="form-label">Valor:</label>
+                    <InputNumber id="valueInput" class="form-control" @bind-Value="Model.Value" />
+                    <ValidationMessage For="@(() => Model.Value)" />
+                </div>
 
-            <div class="mb-3">
-                <label for="dateInput" class="form-label">Date:</label>
-                <InputDate id="dateInput" class="form-control" @bind-Value="SelectedDate" />
-            </div>
+                <div class="row mb-3">
+                    <label class="form-label">Mês e Ano de Referência:</label>
+                    <div class="col">
+                        <InputNumber id="monthInput" class="form-control" @bind-Value="Model.SelectedMonth" placeholder="Mês" />
+                        <ValidationMessage For="@(() => Model.SelectedMonth)" />
+                    </div>
+                    <div class="col">
+                        <InputNumber id="yearInput" class="form-control" @bind-Value="Model.SelectedYear" placeholder="Ano" />
+                        <ValidationMessage For="@(() => Model.SelectedYear)" />
+                    </div>
+                </div>
 
-            <div class="d-grid gap-2 mt-4">
-                <button class="btn btn-primary" @onclick="CalculateCorrection">Calculate IPCA Correction</button>
-            </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Calcular Correção IPCA</button>
+                </div>
+            </EditForm>
 
             @if (CorrectedValue.HasValue)
             {
-                <h3 class="mt-4 text-center text-success">Corrected Value: @CorrectedValue.Value.ToString("C2", CultureInfo.GetCultureInfo("pt-BR"))</h3>
+                <h3 class="mt-4 text-center text-success">Valor Corrigido: @CorrectedValue.Value.ToString("C2", CultureInfo.GetCultureInfo("pt-BR"))</h3>
             }
         </div>
     </div>
@@ -37,21 +48,47 @@
 
 @inject IPCACalculator IPCACalculator
 
+@using Microsoft.AspNetCore.Components.Forms;
+@using System.ComponentModel.DataAnnotations;
+@using QuantoEra.Web.Components.Validation; // Added for custom validation attribute
 @code {
-    private decimal Value { get; set; } = 0;
-    private DateOnly SelectedDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private InputModel Model { get; set; } = new InputModel();
     private decimal? CorrectedValue { get; set; }
 
-    private async Task CalculateCorrection()
+    private DateOnly DateToCalculate => new DateOnly(Model.SelectedYear, Model.SelectedMonth, 1);
+
+    protected override void OnInitialized()
+    {
+        Model.SelectedMonth = DateTime.Today.Month;
+        Model.SelectedYear = DateTime.Today.Year;
+    }
+
+    private async Task HandleValidSubmit()
     {
         try
         {
-            CorrectedValue = await IPCACalculator.CalculateCorrectedValue(Value, SelectedDate);
+            CorrectedValue = await IPCACalculator.CalculateCorrectedValue(Model.Value, DateToCalculate);
         }
         catch (Exception ex)
         {
             CorrectedValue = null;
             Console.WriteLine($"Error calculating IPCA correction: {ex.Message}");
         }
+    }
+
+    [FutureDateValidation] // Applied custom validation attribute
+    public class InputModel
+    {
+        [Required(ErrorMessage = "O valor é obrigatório.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "O valor deve ser maior que zero.")]
+        public decimal Value { get; set; } = 0;
+
+        [Required(ErrorMessage = "O mês é obrigatório.")]
+        [Range(1, 12, ErrorMessage = "O mês deve estar entre 1 e 12.")]
+        public int SelectedMonth { get; set; }
+
+        [Required(ErrorMessage = "O ano é obrigatório.")]
+        [Range(1994, 9999, ErrorMessage = "O ano deve ser maior ou igual a 1994.")] // Max value will be handled by custom validation
+        public int SelectedYear { get; set; }
     }
 }

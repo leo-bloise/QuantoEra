@@ -2,6 +2,7 @@
 @page "/"
 @using QuantoEra.IPCA
 @using System.Globalization
+@using QuantoEra.Web.Components.Shared // Added for ErrorModal
 
 <PageTitle>Quanto Era</PageTitle>
 
@@ -46,6 +47,8 @@
     </div>
 </div>
 
+<ErrorModal @ref="errorModal" />
+
 @inject IPCACalculator IPCACalculator
 
 @using Microsoft.AspNetCore.Components.Forms;
@@ -54,6 +57,7 @@
 @code {
     private InputModel Model { get; set; } = new InputModel();
     private decimal? CorrectedValue { get; set; }
+    private ErrorModal errorModal; // Reference to the modal component
 
     private DateOnly DateToCalculate => new DateOnly(Model.SelectedYear, Model.SelectedMonth, 1);
 
@@ -72,11 +76,12 @@
         catch (Exception ex)
         {
             CorrectedValue = null;
-            Console.WriteLine($"Error calculating IPCA correction: {ex.Message}");
+            Console.WriteLine($"Error calculating IPCA correction: {ex.Message}"); // Log the error
+            errorModal?.Show(); // Show the modal with generic error message
         }
     }
 
-    [FutureDateValidation] // Applied custom validation attribute
+    [FutureDateValidation]
     public class InputModel
     {
         [Required(ErrorMessage = "O valor é obrigatório.")]

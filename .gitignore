@@ -1,0 +1,125 @@
+# Visual Studio 2015+
+.vs/
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+*.log
+*.pfx
+*.vspscc
+*.vssscc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.builds
+*.pidb
+*.booproj
+*.wrap
+_UpgradeReport_Files/
+.idea/
+*.resharper
+*.kproj
+*.hprof
+*.minidmp
+*.safetensors
+*.pth
+*.pt
+
+# Packages
+packages/
+# End of packages
+
+# Rider
+.idea/
+
+# Unit test results
+TestResults/
+coverlet/
+.coverage
+.coveragexml
+
+# Publish
+Publish/
+*.publishproj
+
+# NuGet
+.nuget/
+*.nupkg
+*.snupkg
+*.lock.json
+project.lock.json
+
+# Tooling
+.config/
+.githooks/
+.gitattributes
+.gitkeep
+
+# DBMenus
+DbMenus.xml
+
+# Code analysis
+.sonarlint/
+
+# StyleCop
+StyleCop.Cache
+
+# NCrunch
+_NCrunch_*
+.*.ncrunchsolution
+*.ncrunchproj
+
+# dotnet tool restore
+.config/dotnet-tools.json
+
+# Exception visualizer
+.vs/ExceptionSettings.json
+
+# Local history for solutions
+.vs/SolutionHistory.json
+
+# MAUI
+.maui/
+MauiApp.args
+
+# Precompiled headers
+*.pch
+*.gch
+
+# STS
+*.sts
+
+# Data
+*.sqlite
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# ReSharper
+*.resharper
+
+# VS Code extensions
+.vscode/extensions.json
+
+# Visual Studio temporary files
+*.bak
+*.old
+*.original
+*.rej
+
+# Other
+node_modules/
+dist/
+build/
+.env
+.env.development
+.env.production

@@ -38,6 +38,24 @@ The primary way to interact with the app is through the `QuantoEra.Web` Blazor a
 3.  The application will typically launch and become accessible in your web browser at `http://localhost:5289` (the exact port may vary and will be displayed in your terminal output).
 4.  Open your web browser and visit the displayed URL to start using the "Quanto Era" web application.
 
+### Running with Docker
+
+You can also build and run the `QuantoEra.Web` application using Docker. A convenience script `build_and_run_docker.sh` is provided for this purpose.
+
+1.  Ensure you have Docker installed and running on your system.
+2.  Make the script executable:
+    ```bash
+    chmod +x build_and_run_docker.sh
+    ```
+3.  Execute the script from the root of the repository:
+    ```bash
+    ./build_and_run_docker.sh
+    ```
+    This script will:
+    *   Build the Docker image named `quantoera-web`.
+    *   Run a new Docker container named `quantoera-app`, mapping port `8080` from the container to your host machine.
+4.  Once the script completes, the application will be accessible at `http://localhost:8080` in your web browser.
+
 ## 📁 Projects Overview
 
 Quanto Era is structured into the following distinct projects:

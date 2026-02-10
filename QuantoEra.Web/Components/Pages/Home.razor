@@ -29,7 +29,7 @@
 
             @if (CorrectedValue.HasValue)
             {
-                <h3 class="mt-4 text-center text-success">Corrected Value: @CorrectedValue.Value.ToString("C", CultureInfo.CurrentCulture)</h3>
+                <h3 class="mt-4 text-center text-success">Corrected Value: @CorrectedValue.Value.ToString("C2", CultureInfo.GetCultureInfo("pt-BR"))</h3>
             }
         </div>
     </div>

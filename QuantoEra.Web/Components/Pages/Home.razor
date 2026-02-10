@@ -1,0 +1,57 @@
+@rendermode InteractiveServer
+@page "/"
+@using QuantoEra.IPCA
+@using System.Globalization
+
+<PageTitle>Quanto Era</PageTitle>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
+        <div class="card-header text-center bg-primary text-white">
+            <h1 class="card-title mb-0">Quanto Era</h1>
+        </div>
+        <div class="card-body">
+            <p class="text-center text-muted">Enter a value and a date to calculate the IPCA correction.</p>
+
+            <div class="mb-3">
+                <label for="valueInput" class="form-label">Value:</label>
+                <InputNumber id="valueInput" class="form-control" @bind-Value="Value" />
+            </div>
+
+            <div class="mb-3">
+                <label for="dateInput" class="form-label">Date:</label>
+                <InputDate id="dateInput" class="form-control" @bind-Value="SelectedDate" />
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button class="btn btn-primary" @onclick="CalculateCorrection">Calculate IPCA Correction</button>
+            </div>
+
+            @if (CorrectedValue.HasValue)
+            {
+                <h3 class="mt-4 text-center text-success">Corrected Value: @CorrectedValue.Value.ToString("C", CultureInfo.CurrentCulture)</h3>
+            }
+        </div>
+    </div>
+</div>
+
+@inject IPCACalculator IPCACalculator
+
+@code {
+    private decimal Value { get; set; } = 0;
+    private DateOnly SelectedDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private decimal? CorrectedValue { get; set; }
+
+    private async Task CalculateCorrection()
+    {
+        try
+        {
+            CorrectedValue = await IPCACalculator.CalculateCorrectedValue(Value, SelectedDate);
+        }
+        catch (Exception ex)
+        {
+            CorrectedValue = null;
+            Console.WriteLine($"Error calculating IPCA correction: {ex.Message}");
+        }
+    }
+}

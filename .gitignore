@@ -85,10 +85,6 @@ _NCrunch_*
 # Local history for solutions
 .vs/SolutionHistory.json
 
-# MAUI
-.maui/
-MauiApp.args
-
 # Precompiled headers
 *.pch
 *.gch

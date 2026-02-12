@@ -1,5 +1,8 @@
 namespace QuantoEra.IPCA;
 
+/// <summary>
+/// Represents the monthly IPCA rate data, including percentage values and associated dates.
+/// </summary>
 public class IPCAMonthlyRate
 {
     public DateOnly Date { get; private set; }

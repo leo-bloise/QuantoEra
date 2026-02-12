@@ -1,5 +1,9 @@
 namespace QuantoEra.IPCA;
 
+/// <summary>
+/// Provides services to retrieve and manage IPCA numeric index data from sources like BCB.
+/// </summary>
+/// <param name="ipcaPercentageProvider"></param>
 public class IPCANumericIndexProvider(IPCAMonthlyPercentageProvider ipcaPercentageProvider) : IDisposable
 {
     private bool _disposed = false;
